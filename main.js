@@ -31,8 +31,8 @@ let responseStatusCode = "44";
 let conversationId = "";
 
 export function onClientRequest (request) {
-  const pragma = request.getHeader('Pragma');
-  logger.log(pragma);
+  const referrer = request.getHeader('Referrer');
+  logger.log(referrer);
 }
 
 export function onOriginResponse (request, response) {
@@ -52,7 +52,6 @@ export function onOriginResponse (request, response) {
 }
 
 export function onClientResponse (request, response) {
-  const pragma = request.getHeader('Pragma');
-  logger.log(pragma);
+  payloadMethod = request.method;
   logger.log(payloadMethod);
 }
