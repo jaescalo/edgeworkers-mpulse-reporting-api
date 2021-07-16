@@ -49,7 +49,7 @@ export function onOriginResponse (request, response) {
     params.append("jaime","woohoo");
     logger.log(params);
 
-    payloadUrl = `${request.scheme}://${request.host}${request.path}${params}`;
+    const payloadUrl = `${request.scheme}://${request.host}${request.path}${params}`;
     logger.log(payloadUrl);
 
   }
