@@ -6,6 +6,7 @@ Purpose:  Modify an HTML streamed response by replacing a text string across the
 
 import { httpRequest } from 'http-request';
 import { logger } from 'log';
+import URLSearchParams from 'url-search-params';  
 
 // Instantiate with JSON.parse is much faster than literal object
 let reportingApiPayload = JSON.parse('{\
@@ -27,13 +28,8 @@ let reportingApiPayload = JSON.parse('{\
 let payloadMethod = "";
 let payloadProtocol = "";
 let payloadReferrer = "";
-let responseStatusCode = "44"; 
+let responseStatusCode = ""; 
 let conversationId = "";
-
-export function onClientRequest (request) {
-  const referrer = request.getHeader('Referrer');
-  logger.log(referrer);
-}
 
 export function onOriginResponse (request, response) {
   responseStatusCode = response.status;
@@ -41,17 +37,20 @@ export function onOriginResponse (request, response) {
 
   if (responseStatusCode >=400 && responseStatusCode <= 599) {
     payloadMethod = request.method;
-    logger.log(payloadMethod);
     payloadProtocol = request.scheme;
-    logger.log(payloadProtocol);
     payloadReferrer = request.getHeader('Referrer');
     logger.log(payloadReferrer);
     conversationId = response.getHeader('conversationId');
     logger.log(conversationId);
-  }
-}
 
-export function onClientResponse (request, response) {
-  payloadMethod = request.method;
-  logger.log(payloadMethod);
+
+    var params = new URLSearchParams(request.query);
+    logger.log(params);
+    params.append("jaime","woohoo");
+    logger.log(params);
+
+    payloadUrl = `${request.scheme}://${request.host}${request.path}${params}`;
+    logger.log(payloadUrl);
+
+  }
 }
