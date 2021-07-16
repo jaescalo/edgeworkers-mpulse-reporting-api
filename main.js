@@ -50,7 +50,8 @@ export function onOriginResponse (request, response) {
     logger.log(params);
 
     let myURL = request;
-    myURL.query.set(params);
+    console.log(myURL.query);
+    myURL.query = params;
 
     const payloadUrl = `${myURL.scheme}://${myURL.host}${myURL.url}`;
     logger.log(payloadUrl);
