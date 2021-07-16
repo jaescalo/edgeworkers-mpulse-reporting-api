@@ -50,3 +50,9 @@ export function onOriginResponse (request, response) {
     logger.log(conversationId);
   }
 }
+
+export function onClientResponse (request, response) {
+  const pragma = request.getHeader('Pragma');
+  logger.log(pragma);
+  logger.log(payloadMethod);
+}
