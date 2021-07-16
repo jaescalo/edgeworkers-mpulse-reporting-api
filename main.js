@@ -30,7 +30,12 @@ let payloadReferrer = "";
 let responseStatusCode = "44"; 
 let conversationId = "";
 
-export function onOriginResponse(request, response) {
+export function onClientRequest (request) {
+  const pragma = request.getHeader('Pragma');
+  logger.log(pragma);
+}
+
+export function onOriginResponse (request, response) {
   responseStatusCode = response.status;
   logger.log(responseStatusCode);
 

@@ -15,7 +15,7 @@ executors:
       - image: akamai/edgeworkers
     working_directory: /root/edgeworkers
     environment:
-      EWVERSION: 3.0
+      EWVERSION: 3.01
       EWID: 4885
       BUNDLENAME: ew-bundle.tgz
       DESCRIPTION: "Modify request to mPulse Reporting API"
