@@ -49,7 +49,10 @@ export function onOriginResponse (request, response) {
     params.append("jaime","woohoo");
     logger.log(params);
 
-    const payloadUrl = `${request.scheme}://${request.host}${request.path}${params}`;
+    let myURL = new request();
+    myURL.query.set(params);
+
+    const payloadUrl = `${myURL.scheme}://${myURL.host}${myURL.url}`;
     logger.log(payloadUrl);
 
   }
