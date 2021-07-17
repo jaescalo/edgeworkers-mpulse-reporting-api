@@ -15,7 +15,7 @@ executors:
       - image: akamai/edgeworkers
     working_directory: /root/edgeworkers
     environment:
-      EWVERSION: 3.15
+      EWVERSION: 3.16
       EWID: 4885
       BUNDLENAME: ew-bundle.tgz
       DESCRIPTION: "Modify request to mPulse Reporting API"
@@ -43,6 +43,7 @@ jobs:
             sed -i 's|EWVERSION|'$EWVERSION'|g' bundle.json
             sed -i "s|DESCRIPTION|$DESCRIPTION|g" bundle.json
             sed -i 's|MPULSEKEY|$MPULSEKEY|g' main.js
+            cat main.js
             tar -czvf ./$BUNDLENAME $( find -name "*.js" -or -name "*.json" | cut -c 3-)
             akamai ew upload --bundle ./$BUNDLENAME $EWID --edgerc /root/edgeworkers/.edgerc --accountkey $ACCOUNTKEY
       - persist_to_workspace:
