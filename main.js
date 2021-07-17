@@ -58,7 +58,6 @@ export function onOriginResponse (request, response) {
     options.headers = { "Content-Type": "application/json", 'User-Agent': 'EdgeWorker ID #####' };
     options.body = JSON.stringify(reportingApiPayload);
 
-    const mPulseResponse = await httpRequest("https://reporting.go-mpulse.net/report/B7V57-FC7RT-RFBDA-WJ7QW-UXFMF", options);
-    logger.log(mPulseResponse.status);
+    httpRequest("https://reporting.go-mpulse.net/report/B7V57-FC7RT-RFBDA-WJ7QW-UXFMF", options);
   }
 }
