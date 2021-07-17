@@ -1,7 +1,7 @@
 /*
 (c) Copyright 2020 Akamai Technologies, Inc. Licensed under Apache 2 license.
 Version: 1.1
-Purpose:  Modify an HTML streamed response by replacing a text string across the entire response. The replacement string is stored in NetStorage.
+Purpose:  Create and modify a request to mPulse Reporting API.
 */
 
 import { httpRequest } from 'http-request';
@@ -27,8 +27,8 @@ let reportingApiPayload = JSON.parse('{\
 
 export function onOriginResponse (request, response) {
   let responseStatusCode = response.status;
-  logger.log(responseStatusCode);
 
+  // The reporting API is only applied on error response codes
   if (responseStatusCode >=400 && responseStatusCode <= 599) {
     let payloadMethod = request.method;
     let payloadProtocol = request.scheme;
@@ -36,14 +36,13 @@ export function onOriginResponse (request, response) {
     let conversationId = response.getHeader('conversationId');
 
     // Append the conversatioId to the QS
-    var params = new URLSearchParams(request.query);
-    logger.log(params);
+    let params = new URLSearchParams(request.query);
     params.append("conversationId",conversationId);
-    logger.log(params);
-    let payloadUrl = `${request.scheme}://${request.host}${request.path}?${params}`;
-    logger.log(payloadUrl);
 
-    // Write payload
+    // Build the url parameter for the payload
+    let payloadUrl = `${request.scheme}://${request.host}${request.path}?${params}`;
+
+    // Overwrite the rest of values in the payload
     reportingApiPayload["url"] = payloadUrl; 
     reportingApiPayload["body"]["referrer"] = payloadReferrer;
     reportingApiPayload["body"]["protocol"] = payloadProtocol;
@@ -52,13 +51,13 @@ export function onOriginResponse (request, response) {
     
     logger.log(JSON.stringify(reportingApiPayload));
 
+    // Build the parameters for the request to the mPulse Reporting API
     const options = {}
-
     options.method = "POST";
     options.headers = { "Content-Type": "application/json", 'User-Agent': 'EdgeWorker ID #####' };
     options.body = JSON.stringify(reportingApiPayload);
 
-    // For prod replace MPULSEKEY with the actual API key.
+    // Make the request to the mPulse Reporting API. Not promise implemented for speed purposes. For prod replace MPULSEKEY with the actual API key.
     httpRequest("https://reporting.go-mpulse.net/report/MPULSEKEY", options);
   }
 }
