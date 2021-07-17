@@ -40,7 +40,7 @@ export function onOriginResponse (request, response) {
     logger.log(params);
     params.append("conversationId",conversationId);
     logger.log(params);
-    payloadUrl = `${request.scheme}://${request.host}${request.path}?${params}`;
+    let payloadUrl = `${request.scheme}://${request.host}${request.path}?${params}`;
     logger.log(payloadUrl);
 
     // Write payload
