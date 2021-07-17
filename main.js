@@ -26,6 +26,7 @@ let reportingApiPayload = JSON.parse('{\
   }');
 
 let payloadMethod = "";
+let payloadUrl = "";
 let payloadProtocol = "";
 let payloadReferrer = "";
 let responseStatusCode = ""; 
@@ -43,18 +44,11 @@ export function onOriginResponse (request, response) {
     conversationId = response.getHeader('conversationId');
     logger.log(conversationId);
 
-
     var params = new URLSearchParams(request.query);
     logger.log(params);
     params.append("jaime","woohoo");
     logger.log(params);
-
-    let myURL = request;
-    console.log(myURL.query);
-    myURL.query = params;
-
-    const payloadUrl = `${myURL.scheme}://${myURL.host}${myURL.url}`;
+    payloadUrl = `${request.scheme}://${request.host}${request.path}?${params}`;
     logger.log(payloadUrl);
-
   }
 }
