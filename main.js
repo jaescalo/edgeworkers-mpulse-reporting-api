@@ -25,22 +25,15 @@ let reportingApiPayload = JSON.parse('{\
     }\
   }');
 
-let payloadMethod = "";
-let payloadUrl = "";
-let payloadProtocol = "";
-let payloadReferrer = "";
-let responseStatusCode = ""; 
-let conversationId = "";
-
 export function onOriginResponse (request, response) {
-  responseStatusCode = response.status;
+  let responseStatusCode = response.status;
   logger.log(responseStatusCode);
 
   if (responseStatusCode >=400 && responseStatusCode <= 599) {
-    payloadMethod = request.method;
-    payloadProtocol = request.scheme;
-    payloadReferrer = request.getHeader('Referrer');
-    conversationId = response.getHeader('conversationId');
+    let payloadMethod = request.method;
+    let payloadProtocol = request.scheme;
+    let payloadReferrer = request.getHeader('Referrer');
+    let conversationId = response.getHeader('conversationId');
 
     // Append the conversatioId to the QS
     var params = new URLSearchParams(request.query);
@@ -57,6 +50,6 @@ export function onOriginResponse (request, response) {
     reportingApiPayload["body"]["method"] = payloadMethod;
     reportingApiPayload["body"]["status_code"] = responseStatusCode; 
     
-    console.log(JSON.stringify(reportingApiPayload));
+    logger.log(JSON.stringify(reportingApiPayload));
   }
 }
