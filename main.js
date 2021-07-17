@@ -17,7 +17,7 @@ let reportingApiPayload = JSON.parse('{\
     "sampling_fraction": 1.0,\
     "referrer": "",\
     "server_ip": "111.111.111.111",\
-    "protocol": "https",\
+    "protocol": "",\
     "method": "",\
     "status_code": "",\
     "elapsed_time": 823,\
@@ -40,15 +40,23 @@ export function onOriginResponse (request, response) {
     payloadMethod = request.method;
     payloadProtocol = request.scheme;
     payloadReferrer = request.getHeader('Referrer');
-    logger.log(payloadReferrer);
     conversationId = response.getHeader('conversationId');
-    logger.log(conversationId);
 
+    // Append the conversatioId to the QS
     var params = new URLSearchParams(request.query);
     logger.log(params);
-    params.append("jaime","woohoo");
+    params.append("conversationId",conversationId);
     logger.log(params);
     payloadUrl = `${request.scheme}://${request.host}${request.path}?${params}`;
     logger.log(payloadUrl);
+
+    // Write payload
+    reportingApiPayload["url"] = payloadUrl; 
+    reportingApiPayload["body"]["referrer"] = payloadReferrer;
+    reportingApiPayload["body"]["protocol"] = payloadProtocol;
+    reportingApiPayload["body"]["method"] = payloadMethod;
+    reportingApiPayload["body"]["status_code"] = responseStatusCode; 
+    
+    console.log(JSON.stringify(reportingApiPayload));
   }
 }
