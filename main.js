@@ -51,5 +51,13 @@ export function onOriginResponse (request, response) {
     reportingApiPayload["body"]["status_code"] = responseStatusCode; 
     
     logger.log(JSON.stringify(reportingApiPayload));
+
+    const options = {}
+    
+    options.method = "POST";
+    options.headers = { "Content-Type": "application/json", 'User-Agent': 'EdgeWorker ID #####' };
+    options.body = JSON.stringify(reportingApiPayload);
+    
+    httpRequest("https://reporting.go-mpulse.net/report/B7V57-FC7RT-RFBDA-WJ7QW-UXFMF", options);
   }
 }
