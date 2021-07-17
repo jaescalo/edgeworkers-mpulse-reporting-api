@@ -58,6 +58,7 @@ export function onOriginResponse (request, response) {
     options.headers = { "Content-Type": "application/json", 'User-Agent': 'EdgeWorker ID #####' };
     options.body = JSON.stringify(reportingApiPayload);
 
-    httpRequest("https://reporting.go-mpulse.net/report/B7V57-FC7RT-RFBDA-WJ7QW-UXFMF", options);
+    // For prod replace MPULSEKEY with the actual API key.
+    httpRequest("https://reporting.go-mpulse.net/report/MPULSEKEY", options);
   }
 }
