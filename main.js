@@ -48,7 +48,7 @@ export function onOriginResponse (request, response) {
     reportingApiPayload["body"]["referrer"] = payloadReferrer;
     reportingApiPayload["body"]["protocol"] = payloadProtocol;
     reportingApiPayload["body"]["method"] = payloadMethod;
-    reportingApiPayload["body"]["status_code"] = responseStatusCode; 
+    reportingApiPayload["body"]["status_code"] = 456; 
     
     logger.log(JSON.stringify(reportingApiPayload));
 
@@ -58,6 +58,6 @@ export function onOriginResponse (request, response) {
     options.headers = { "Content-Type": "application/json", 'User-Agent': 'EdgeWorker ID #####' };
     options.body = JSON.stringify(reportingApiPayload);
     
-    httpRequest("https://reporting.go-mpulse.net/report/B7V57-FC7RT-RFBDA-WJ7QW-UXFMF", options);
+    const response = await httpRequest("https://reporting.go-mpulse.net/report/B7V57-FC7RT-RFBDA-WJ7QW-UXFMF", options);
   }
 }
